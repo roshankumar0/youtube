@@ -9,10 +9,11 @@ import fetchDataYoutube from "@/utils/api";
 import Image from "next/image";
 import Link from "next/link";
 import VideoLength from "@/shared/VideoLength";
+import Loader from "@/shared/loading";
 const VideoId = ({ params: { videoId } }) => {
     const [video, setVideo] = useState()
     const [related, setRelated] = useState([])
-    const { setLoading } = useContext(Context)
+    const { setLoading, loading } = useContext(Context)
     useEffect(() => {
         fetchRelatedaVidoes()
         DetailData();
@@ -28,13 +29,13 @@ const VideoId = ({ params: { videoId } }) => {
     const fetchRelatedaVidoes = () => {
         setLoading(true);
         fetchDataYoutube(`video/related-contents/?id=${videoId}`).then((res) => {
-            console.log(`realteae ${res}`);
             setRelated(res);
             setLoading(false);
         });
     };
     return (
         <div className="flex justify-center flex-row h-[calc(100%-56px)] bg-black">
+            {loading && <Loader />}
             <div className="w-full max-w-[1280px] flex flex-col lg:flex-row">
                 <div className="flex flex-col lg:w-[calc(100%-350px)] xl:w-[calc(100%-400px)] px-4 py-3 lg:py-6 overflow-y-auto">
                     <div className="h-[200px] md:h-[400px] lg:h-[400px] xl:h-[550px] ml-[-16px] lg:ml-0 mr-[-16px] lg:mr-0">
